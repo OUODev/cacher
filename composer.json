@@ -1,0 +1,29 @@
+{
+    "name": "ouodev/cacher",
+    "description": "laravel cacher.",
+    "type": "library",
+    "keywords": ["laravel", "cacher"],
+    "require": {
+        "php": ">=8.0",
+        "laravel/framework": "^9.0|^10.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "koie",
+            "email": "koie@ouorange.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Ouodev\\Cacher\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ouodev\\Cacher\\CacherServiceProvider"
+            ]
+        }
+    }
+}
