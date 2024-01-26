@@ -43,7 +43,7 @@ class CacherServiceProvider extends ServiceProvider
             ->middleware(config('cacher.middlewares', ['web', 'auth:web']))
             ->group(function () {
                 Route::get('/cache', function () {
-                        Artisan::call('optimize:cache');
+                        Artisan::call('optimize');
 
                         info('Cache executed successfully.');
 
