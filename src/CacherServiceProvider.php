@@ -43,24 +43,20 @@ class CacherServiceProvider extends ServiceProvider
             ->middleware(config('cacher.middlewares', ['web', 'auth:web']))
             ->group(function () {
                 Route::get('/cache', function () {
-                        Artisan::call('config:cache');
-                        Artisan::call('view:cache');
-                        Artisan::call('route:cache');
+                        Artisan::call('optimize:cache');
 
                         info('Cache executed successfully.');
 
-                        return redirect()->back();
+                        return redirect()->to(config('cacher.prefix', 'admin'));
                     }
                 );
 
                 Route::get('/clear', function () {
-                        Artisan::call('config:clear');
-                        Artisan::call('view:clear');
-                        Artisan::call('route:clear');
+                        Artisan::call('optimize:clear');
 
                         info('Cache cleared successfully.');
 
-                        return redirect()->back();
+                        return redirect()->to(config('cacher.prefix', 'admin'));
                     }
                 );
             });
