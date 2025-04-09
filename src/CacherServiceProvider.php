@@ -2,6 +2,7 @@
 
 namespace Ouodev\Cacher;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -35,30 +36,38 @@ class CacherServiceProvider extends ServiceProvider
      */
     protected function defineRoutes(): void
     {
-        if (app()->routesAreCached() || config('cacher.routes', true) === false) {
+        if (app()->routesAreCached() || !config('cacher.routes')) {
             return;
         }
 
-        Route::prefix(config('cacher.prefix', 'admin'))
-            ->middleware(config('cacher.middlewares', ['web', 'auth:web']))
+        Route::prefix(config('cacher.prefix'))
+            ->middleware(config('cacher.middlewares'))
             ->group(function () {
-                Route::get('/cache', function () {
-                        Artisan::call('optimize');
+                Route::get('/cache', function (Request $request) {
+                    Artisan::call('optimize');
 
-                        info('Cache executed successfully.');
+                    info('Cache executed successfully.');
 
-                        return redirect()->to(config('cacher.prefix', 'admin'));
-                    }
-                );
+                    return $request->expectsJson()
+                        ? response()->json([
+                            'status' => 'success',
+                            'message' => 'Cache executed successfully.',
+                        ])
+                        : redirect()->to(config('cacher.prefix'));
+                });
 
-                Route::get('/clear', function () {
-                        Artisan::call('optimize:clear');
+                Route::get('/clear', function (Request $request) {
+                    Artisan::call('optimize:clear');
 
-                        info('Cache cleared successfully.');
+                    info('Cache cleared successfully.');
 
-                        return redirect()->to(config('cacher.prefix', 'admin'));
-                    }
-                );
+                    return  $request->expectsJson()
+                    ? response()->json([
+                        'status' => 'success',
+                        'message' => 'Cache cleared successfully.',
+                    ])
+                    : redirect()->to(config('cacher.prefix'));
+                });
             });
     }
 }
