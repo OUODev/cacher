@@ -62,11 +62,11 @@ class CacherServiceProvider extends ServiceProvider
                     info('Cache cleared successfully.');
 
                     return  $request->expectsJson()
-                    ? response()->json([
-                        'status' => 'success',
-                        'message' => 'Cache cleared successfully.',
-                    ])
-                    : redirect()->to(config('cacher.prefix'));
+                        ? response()->json([
+                            'status' => 'success',
+                            'message' => 'Cache cleared successfully.',
+                        ])
+                        : redirect()->to(config('cacher.prefix'));
                 });
             });
     }
